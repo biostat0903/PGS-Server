@@ -100,6 +100,7 @@ sh ${PRSCS} -s ${summary_file_prefix} -c ${chr} -p ${pop} -o ${out_prefix}
 ````
 
 ## SbayesR
+Following SbayesR paper, we set the weights of the four normal components (“--pi”) to the default values of {0.95,0.02,0.02,0.01} and set the four scaling variance parameters (“--gamma”) to the default values of {0,0.01,0.1,1}. We constructed the SNP LD matrix using the “--make-shrunk-ldm” option, again with the default settings (effective population size = 11,400; genetic map sample size = 183; shrinkage hard threshold = 10-5). We set the MCMC chain length to be 10,000 with an additional 2,000 burn-in iterations. 
 ````bash
 # code path
 CODEDIR=/home/yasheng/comprsWeb/scripts/07_SbayesR/
@@ -111,10 +112,43 @@ chr=22
 pi=0.95,0.02,0.02,0.01
 out_prefix=${DATADIR}output/SbayesR_esteff
 pop=EUR
-
 # SbayesR method
 sh ${SBAYESR} -C ${CODEDIR} -s ${summary_file_prefix} -P ${pop} -c ${chr} -p ${pi} -o ${out_prefix}
 ````
 ## SBLUP
+We used the GCTA to fit SBLUP and used h2 as the SNP heritability input. SBLUP also requires users to specify a LD window size that is used to construct the SNP correlation matrix in the reference panel. 
+````bash
+# code path
+DIR=/home/yasheng/comprsWeb/scripts/08_SBLUP/
+SBLUP=${DIR}sblup.sh
+DATADIR=/home/yasheng/comprsWeb/example_data/
+# parameters
+summary_file_prefix=${DATADIR}chr22/summary
+herit=0.1
+window=1000
+chr=22
+ref_file=${DATADIR}chr22/geno
+out_prefix=${DATADIR}output/SBLUP_esteff
+# SBLUP method
+sh ${SBLUP} -s ${summary_file_prefix} -H ${herit} -r ${ref_file} -t 1 -w ${window} -c ${chr} -o ${out_prefix}
+````
 
 ## SCT
+The input of SCT is the same as that of CT.
+````shell
+# code path
+CODEDIR=/home/yasheng/comprsWeb/scripts/01_CT/
+DATADIR=/home/yasheng/comprsWeb/example_data/
+SCT=${CODEDIR}SCT.sh
+# data path
+summ=${DATADIR}all/summary.assoc.txt
+valg=${DATADIR}val/valid
+valp=${DATADIR}val/valid_pheno.txt
+outpath=${DATADIR}output/
+# paramaters
+pl=2
+rv=0.1,0.2
+dv=50
+# CT method
+sh ${SCT} -C ${CODEDIR} -s ${summ} -G ${valg} -P ${valp} -p ${pl} -r ${rv} -d ${dv} -${outpath}
+````
