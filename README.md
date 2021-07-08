@@ -10,7 +10,7 @@ The script `CT.sh` is to call `CT.R` function. The shell script is as following:
 ````shell
 # code path
 DIR=/home/yasheng/comprsWeb/
-CODEDIR=${DIR}scripts/
+CODEDIR=${DIR}script/
 DATADIR=${DIR}/example_data/
 CT=${CODEDIR}01_CT/CT.sh
 # data path
