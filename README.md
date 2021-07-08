@@ -41,7 +41,25 @@ outpath=${DATADIR}output/
 # population
 pop=EUR
 # lassosum method
-sh ${LASSOSUM} -C ${CODEDIR}/03_lassosum -s ${summ} -G ${valg} -P ${valp} -p ${pop} -c 0 -o ${outpath}
+sh ${LASSOSUM} -C ${CODEDIR}/03_lassosum -s ${summ} -G ${valg} -P ${valp} -p ${pop} -o ${outpath}
 ````
 
 ## LDpred2 (`bigsnpr`)
+Following LDpred2 paper, we examined four different models implemented in LDpred2 described as follows. (1) LDpred2-inf is the infinitesimal model that is fitted based on an analytic solution. (2) LDpred2-sp is a sparse Bayesian variable selection regression model that selects a small proportion of SNPs to construct PGS. LDpred2-sp contains two hyper-parameters that include the proportion of causal variants p and the SNP heritability h2. LDpred2-sp explores different combinations of the two hyper-parameters on a pre-selected set of grid values and determines the optimal hyper-parameter combination through cross-validation. (3) LDpred2-nosp fits the same model as LDpred2-sp but sets the proportion of causal variants p to be exactly one (and thus becomes non-sparse). (4) LDpred2-auto fits the same model as LDpred2-nosp but automatically estimates p and h2 from the training data. The script `LDpred2.sh` is to call `LDpred2.R` function. The shell script is as following:
+````shell
+# code path
+CODEDIR=/home/yasheng/comprsWeb/scripts/
+LDPRED2=${CODEDIR}LDpred2.sh
+DATADIR=/home/yasheng/comprsWeb/example_data/
+# data path
+summary_file_prefix=${DATADIR}chr22/summary
+val_geno=${DATADIR}val/valid
+val_pheno=${DATADIR}val/valid_pheno.txt
+outpath=${DATADIR}output/
+# parameters
+chr=22
+# LDpred2
+sh ${LDPRED2} -s ${summary_file_prefix}.assoc.txt -G ${val_geno} -P ${val_pheno} -C ${chr} -o ${outpath}
+````
+
+## 
