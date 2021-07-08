@@ -23,7 +23,7 @@ pl=2
 rv=0.1,0.2
 dv=50
 # CT method
-sh ${CT} -C ${CODEDIR}01_CT/ -s ${summ} -G ${valg} -P ${valp} -p ${pl} -r ${rv} -d ${dv} -${outpath}
+sh ${CT} -C ${CODEDIR}01_CT/ -s ${summ} -G ${valg} -P ${valp} -p ${pl} -r ${rv} -d ${dv} -o ${outpath}
 ````
 
 ## DBSLMM (`R`+`C++`+`shell`)
@@ -34,7 +34,7 @@ We use the default setting for lassosum using `R`. Lassosum contains two hyper-p
 ````shell
 # code path
 DIR=/home/yasheng/comprsWeb/
-CODEDIR=${DIR}scripts/
+CODEDIR=${DIR}script/
 DATADIR=${DIR}/example_data/
 LASSOSUM=${CODEDIR}03_lassosum/lassosum.sh
 # data path
@@ -53,7 +53,7 @@ Following LDpred2 paper, we examined four different models implemented in LDpred
 ````shell
 # code path
 DIR=/home/yasheng/comprsWeb/
-CODEDIR=${DIR}scripts/
+CODEDIR=${DIR}script/
 DATADIR=${DIR}/example_data/
 LDPRED2=${CODEDIR}/04_LDpred2/LDpred2.sh
 # data path
@@ -72,7 +72,7 @@ The original version of `NPS` can not use to analyze multiple traits at one time
 ````shell
 # code path
 DIR=/home/yasheng/comprsWeb/
-CODEDIR=${DIR}scripts/
+CODEDIR=${DIR}script/
 DATADIR=${DIR}/example_data/
 NPS=${CODEDIR}05_NPS/nps.sh
 SOFTDIR=${DIR}/software/NPS/
@@ -110,7 +110,7 @@ Following SbayesR paper, we set the weights of the four normal components (“--
 ````bash
 # code path
 DIR=/home/yasheng/comprsWeb/
-CODEDIR=${DIR}scripts/
+CODEDIR=${DIR}script/
 DATADIR=${DIR}/example_data/
 SBAYESR=${CODEDIR}07_SbayesR/SbayesR.sh
 SOFTDIR=${DIR}/software/ # please download the GCTB software and store it in the directory
@@ -129,7 +129,7 @@ We used the GCTA to fit SBLUP and used h2 as the SNP heritability input. SBLUP a
 ````bash
 # code path
 DIR=/home/yasheng/comprsWeb/
-CODEDIR=${DIR}/scripts/
+CODEDIR=${DIR}/script/
 DATADIR=${DIR}/example_data/
 SBLUP=${CODEDIR}/08_SBLUP/sblup.sh
 SOFTDIR=${DIR}/software/ # please download the GCTA software and store it in the directory
@@ -149,7 +149,7 @@ The input of SCT is the same as that of CT.
 ````shell
 # code path
 DIR=/home/yasheng/comprsWeb/
-CODEDIR=${DIR}scripts/
+CODEDIR=${DIR}script/
 DATADIR=${DIR}/example_data/
 CT=${CODEDIR}09_SCT/SCT.sh
 # data path
