@@ -1,5 +1,6 @@
 # COM-PGS
 The software compares the existing methods of PGS construction, including CT (`bigsnpr`), DBSLMM, lassosum, LDpred2-auto, LDpred2-inf, LDpred2-sp, LDpred2-nosp, NPS, PRSCS, SbayesR, SBLUP and SCT. Specially, for DBSLMM and PRSCS, we give two versions: automatic and tuning version. The code for each method is in the `script` file folder. 
+
 ## Preparing for code
 All methods are coded by `R`, `plink` and shell script. The user should run the code in Linux or virtual environment for Linux. Then the user should install the R packages, including `bigsnpr`, `bigstatsr`, `bigreadr`, `plyr`, `tidyverse`, `optparse`, `lassosum` and `doParallel`. The user also need to download the [plink] (https://www.cog-genomics.org/plink/). 
 ## CT (`bingsnpr`)
@@ -58,8 +59,62 @@ val_pheno=${DATADIR}val/valid_pheno.txt
 outpath=${DATADIR}output/
 # parameters
 chr=22
-# LDpred2
-sh ${LDPRED2} -s ${summary_file_prefix}.assoc.txt -G ${val_geno} -P ${val_pheno} -C ${chr} -o ${outpath}
+# LDpred2 method
+sh ${LDPRED2} -C ${CODEDIR}/04_LDpred2 -s ${summary_file_prefix}.assoc.txt -G ${val_geno} -P ${val_pheno} -C ${chr} -o ${outpath}
 ````
 
-## 
+## NPS (`C++`+`R`)
+The original version of `NPS` can not use to analyze multiple traits at one time and can not analyze the genotype with NA. We update the `NPS` pacakge. The script `LDpred2.sh` is to call `LDpred2.R` function. The shell script is as following:
+````shell
+# code path
+CODEDIR=/home/yasheng/comprsWeb/scripts/
+NPS=${CODEDIR}nps.sh
+DATADIR=/home/yasheng/comprsWeb/example_data/
+# data path
+val_geno=/home/yasheng/comprsWeb/example_data/val/valid
+val_pheno=/home/yasheng/comprsWeb/example_data/val/valid_pheno.txt
+summary_file_prefix=/home/yasheng/comprsWeb/example_data/all/summary
+outpath=/home/yasheng/comprsWeb/example_data/output/
+# parameter
+window_size=60
+# NPS
+sh ${nps} -C ${CODEDIR}/05_NPS -s ${summary_file_prefix} -G ${val_geno} -P ${val_pheno} -w ${window_size} -o ${outpath}
+````
+
+## PRSCS
+Following PRSCS paper, we set the hyper-parameter a in PRSCS to the default value of 1, set the hyper-parameter b to the default value of 0.5, and inferred the global scaling hyper-parameter ϕ among a set of four choices {10^(-6),10^(-4),0.01,1}. We also examined the automatic version of PRSCS, referring to PRSCS-auto. 
+````shell
+
+DIR=/home/yasheng/comprsWeb/scripts/
+PRSCS=${DIR}PRSCS.sh
+
+# parameters
+summary_file_prefix=/home/yasheng/comprsWeb/example_data/chr22/summary
+out_prefix=/home/yasheng/comprsWeb/example_data/output/PRSCS_esteff
+chr=22
+pop=EUR
+
+sh ${PRSCS} -s ${summary_file_prefix} -c ${chr} -p ${pop} -o ${out_prefix}
+
+
+````
+
+## SbayesR
+````bash
+# code path
+CODEDIR=/home/yasheng/comprsWeb/scripts/07_SbayesR/
+SBAYESR=${DIR}SbayesR.sh
+DATADIR=/home/yasheng/comprsWeb/example_data/
+# parameters
+summary_file_prefix=${DATADIR}chr22/summary
+chr=22
+pi=0.95,0.02,0.02,0.01
+out_prefix=${DATADIR}output/SbayesR_esteff
+pop=EUR
+
+# SbayesR method
+sh ${SBAYESR} -C ${CODEDIR} -s ${summary_file_prefix} -P ${pop} -c ${chr} -p ${pi} -o ${out_prefix}
+````
+## SBLUP
+
+## SCT
