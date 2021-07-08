@@ -152,3 +152,6 @@ dv=50
 # CT method
 sh ${SCT} -C ${CODEDIR} -s ${summ} -G ${valg} -P ${valp} -p ${pl} -r ${rv} -d ${dv} -${outpath}
 ````
+## External validation (`R`)
+The detail for external validation is: https://github.com/biostat0903/DBSLMM. 
+
