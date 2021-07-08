@@ -3,7 +3,7 @@ The software compares the existing methods of PGS construction, including CT (`b
 
 ## Preparing for code
 All methods are coded by `R`, `plink` and shell script. The user should run the code in Linux or virtual environment for Linux. Then the user should install the R packages, including `bigsnpr`, `bigstatsr`, `bigreadr`, `plyr`, `tidyverse`, `optparse`, `lassosum` and `doParallel`. The user also need to download the [plink] (https://www.cog-genomics.org/plink/). 
-## CT (`bingsnpr`)
+## CT (`bingsnpr` R package)
 We use the recommendation setting of `bigsnpr`, including 1,400 parameter combinations. The combination has three parameters, including p value, window size and r2. follwing , we recomment 50 different settings of p value, 4 different settings of window size and 7 different settings of r2. 
 The script `CT.sh` is to call `CT.R` function. The shell script is as following:
 ````shell
@@ -45,7 +45,7 @@ pop=EUR
 sh ${LASSOSUM} -C ${CODEDIR}/03_lassosum -s ${summ} -G ${valg} -P ${valp} -p ${pop} -o ${outpath}
 ````
 
-## LDpred2 (`bigsnpr`)
+## LDpred2 (`bigsnpr` R package)
 Following LDpred2 paper, we examined four different models implemented in LDpred2 described as follows. (1) LDpred2-inf is the infinitesimal model that is fitted based on an analytic solution. (2) LDpred2-sp is a sparse Bayesian variable selection regression model that selects a small proportion of SNPs to construct PGS. LDpred2-sp contains two hyper-parameters that include the proportion of causal variants p and the SNP heritability h2. LDpred2-sp explores different combinations of the two hyper-parameters on a pre-selected set of grid values and determines the optimal hyper-parameter combination through cross-validation. (3) LDpred2-nosp fits the same model as LDpred2-sp but sets the proportion of causal variants p to be exactly one (and thus becomes non-sparse). (4) LDpred2-auto fits the same model as LDpred2-nosp but automatically estimates p and h2 from the training data. The script `LDpred2.sh` is to call `LDpred2.R` function. The shell script is as following:
 ````shell
 # code path
@@ -81,7 +81,7 @@ window_size=60
 sh ${nps} -C ${CODEDIR}/05_NPS -s ${summary_file_prefix} -G ${val_geno} -P ${val_pheno} -w ${window_size} -o ${outpath}
 ````
 
-## PRSCS
+## PRSCS (`python`)
 Following PRSCS paper, we set the hyper-parameter a in PRSCS to the default value of 1, set the hyper-parameter b to the default value of 0.5, and inferred the global scaling hyper-parameter ϕ among a set of four choices {10^(-6),10^(-4),0.01,1}. We also examined the automatic version of PRSCS, referring to PRSCS-auto. 
 ````shell
 
@@ -99,7 +99,7 @@ sh ${PRSCS} -s ${summary_file_prefix} -c ${chr} -p ${pop} -o ${out_prefix}
 
 ````
 
-## SbayesR
+## SbayesR (GCTB `C++`)
 Following SbayesR paper, we set the weights of the four normal components (“--pi”) to the default values of {0.95,0.02,0.02,0.01} and set the four scaling variance parameters (“--gamma”) to the default values of {0,0.01,0.1,1}. We constructed the SNP LD matrix using the “--make-shrunk-ldm” option, again with the default settings (effective population size = 11,400; genetic map sample size = 183; shrinkage hard threshold = 10-5). We set the MCMC chain length to be 10,000 with an additional 2,000 burn-in iterations. 
 ````bash
 # code path
@@ -115,7 +115,7 @@ pop=EUR
 # SbayesR method
 sh ${SBAYESR} -C ${CODEDIR} -s ${summary_file_prefix} -P ${pop} -c ${chr} -p ${pi} -o ${out_prefix}
 ````
-## SBLUP
+## SBLUP (GCTA `C++`)
 We used the GCTA to fit SBLUP and used h2 as the SNP heritability input. SBLUP also requires users to specify a LD window size that is used to construct the SNP correlation matrix in the reference panel. 
 ````bash
 # code path
@@ -133,7 +133,7 @@ out_prefix=${DATADIR}output/SBLUP_esteff
 sh ${SBLUP} -s ${summary_file_prefix} -H ${herit} -r ${ref_file} -t 1 -w ${window} -c ${chr} -o ${out_prefix}
 ````
 
-## SCT
+## SCT (`bigsnpr` R package)
 The input of SCT is the same as that of CT.
 ````shell
 # code path
