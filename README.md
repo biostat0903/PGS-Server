@@ -3,7 +3,7 @@ The software compares the existing methods of PGS construction, including CT (`b
 
 ## Preparing for code
 All methods are coded by `R`, `plink` and shell script. The user should run the code in Linux or virtual environment for Linux. Then the user should install the R packages, including `bigsnpr`, `bigstatsr`, `bigreadr`, `plyr`, `tidyverse`, `optparse`, `lassosum` and `doParallel`. The user also need to download the [plink](https://www.cog-genomics.org/plink/). 
-## CT (`bingsnpr` R package)
+## CT (bingsnpr `R` package)
 We use the recommendation setting of `bigsnpr`, including 1,400 parameter combinations. The combination has three parameters, including p value, window size and r2. follwing , we recomment 50 different settings of p value, 4 different settings of window size and 7 different settings of r2. 
 The script `CT.sh` is to call `CT.R` function. The shell script is as following:
 ````shell
@@ -45,7 +45,7 @@ pop=EUR
 sh ${LASSOSUM} -C ${CODEDIR}/03_lassosum -s ${summ} -G ${valg} -P ${valp} -p ${pop} -o ${outpath}
 ````
 
-## LDpred2 (`bigsnpr` R package)
+## LDpred2 (bingsnpr `R` package)
 Following LDpred2 paper, we examined four different models implemented in LDpred2 described as follows. (1) LDpred2-inf is the infinitesimal model that is fitted based on an analytic solution. (2) LDpred2-sp is a sparse Bayesian variable selection regression model that selects a small proportion of SNPs to construct PGS. LDpred2-sp contains two hyper-parameters that include the proportion of causal variants p and the SNP heritability h2. LDpred2-sp explores different combinations of the two hyper-parameters on a pre-selected set of grid values and determines the optimal hyper-parameter combination through cross-validation. (3) LDpred2-nosp fits the same model as LDpred2-sp but sets the proportion of causal variants p to be exactly one (and thus becomes non-sparse). (4) LDpred2-auto fits the same model as LDpred2-nosp but automatically estimates p and h2 from the training data. The script `LDpred2.sh` is to call `LDpred2.R` function. The shell script is as following:
 ````shell
 # code path
@@ -133,7 +133,7 @@ out_prefix=${DATADIR}output/SBLUP_esteff
 sh ${SBLUP} -s ${summary_file_prefix} -H ${herit} -r ${ref_file} -t 1 -w ${window} -c ${chr} -o ${out_prefix}
 ````
 
-## SCT (`bigsnpr` R package)
+## SCT (bingsnpr `R` package)
 The input of SCT is the same as that of CT.
 ````shell
 # code path
