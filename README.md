@@ -22,3 +22,9 @@ dv=50
 # CT method
 sh ${CT} -C ${CODEDIR} -s ${summ} -G ${valg} -P ${valp} -p ${pl} -r ${rv} -d ${dv} -${outpath}
 ````
+
+## DBSLMM (`R`+`C++`+`shell`)
+The detail for DBSLMM is: https://github.com/biostat0903/DBSLMM. 
+
+## lassosum (`lassosum` R package)
+We use the default setting for lassosum using `R`. Lassosum contains two hyper-parameters: the penalty parameter (λ) in the lasso regression and the shrinkage parameter (s) used for computing the SNP correlation matrix in the reference panel. Following lassosum paper, we considered four choices of s (0.2, 0.5, 0.9 and 1) and 20 choices of λ that are evenly spaced on the logarithmic scale between log(0.01) and log(0.1). The script `lassosum.sh` is to call `lassosum.R` function. The shell script is as following:
