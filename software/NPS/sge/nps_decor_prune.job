@@ -1,0 +1,47 @@
+#!/bin/bash
+
+###
+# ADD CODES TO LOAD R MODULE HERE
+# Broad institute: 
+# source /broad/software/scripts/useuse
+# use OpenblasR
+#
+# BCH E2:
+# module add openblas/0.3.5
+# module add R/3.5.3
+###
+
+if [ ! -z "$SGE_TASK_ID" ]; then
+    CHROM=$SGE_TASK_ID
+    echo "SGE/UGER clusters: SGE_TASK_ID=$CHROM"
+elif [ ! -z "$LSB_JOBINDEX" ]; then
+    CHROM=$LSB_JOBINDEX
+    echo "LSF clusters: LSB_JOBINDEX=$CHROM"
+elif [ ! -z "$SLURM_ARRAY_TASK_ID" ]; then
+    CHROM=$SLURM_ARRAY_TASK_ID
+    echo "SLURM clusters: SLURM_ARRAY_TASK_ID=$CHROM"
+else
+    echo "Unknown job scheduler"
+    exit 1
+fi
+
+# nps_decor.job
+Rscript npsR/nps_decor.R $1 $CHROM $2 > $1/log/nps_decor.Rout.$2.$CHROM
+
+logfile="$1/log/nps_decor.Rout.$2.$CHROM"
+
+if [ ! -f $logfile ]; then
+    echo "nps_decor FAILED: STOP"
+    exit 1
+fi
+
+last=`grep -w Done $logfile | tail -n 1`
+
+if [ "$last" != "Done" ]; then
+    echo "nps_decor FAILED: STOP"
+    exit 1
+fi
+
+# nps_prune.job
+Rscript npsR/nps_prune.R $1 $CHROM $2 > $1/log/nps_prune.Rout.$2.$CHROM
+

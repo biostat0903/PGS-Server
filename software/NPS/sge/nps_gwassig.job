@@ -1,0 +1,29 @@
+#!/bin/bash
+
+###
+# ADD CODES TO LOAD R MODULE HERE
+#
+# Broad institute: 
+# source /broad/software/scripts/useuse
+# use OpenblasR
+#
+# BCH E2:
+# module add openblas/0.3.5
+# module add R/3.5.3
+###
+
+if [ ! -z "$SGE_TASK_ID" ]; then
+    CHROM=$SGE_TASK_ID
+    echo "SGE/UGER clusters: SGE_TASK_ID=$CHROM"
+elif [ ! -z "$LSB_JOBINDEX" ]; then
+    CHROM=$LSB_JOBINDEX
+    echo "LSF clusters: LSB_JOBINDEX=$CHROM"
+elif [ ! -z "$SLURM_ARRAY_TASK_ID" ]; then
+    CHROM=$SLURM_ARRAY_TASK_ID
+    echo "SLURM clusters: SLURM_ARRAY_TASK_ID=$CHROM"
+else
+    echo "Unknown job scheduler"
+    exit 1
+fi
+
+Rscript npsR/nps_gwassig.R $1 $CHROM > $1/log/nps_gwassig.Rout.$CHROM

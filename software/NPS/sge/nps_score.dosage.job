@@ -1,0 +1,64 @@
+#!/bin/bash 
+
+###
+# ADD CODES TO LOAD MODULES HERE
+#
+# Load R module if necessary. 
+# 
+# If you loaded a GCC module to compile grs, you also need to load 
+# the GCC module here. 
+# 
+# Broad institute: 
+# source /broad/software/scripts/useuse
+# use GCC-5.2
+# use OpenblasR
+# 
+# BCH E2: 
+# module add openblas/0.3.5
+# module add R/3.5.3
+###
+
+if [ ! -z "$SGE_TASK_ID" ]; then
+    CHROM=$SGE_TASK_ID
+    echo "SGE/UGER clusters: SGE_TASK_ID=$CHROM"
+elif [ ! -z "$LSB_JOBINDEX" ]; then
+    CHROM=$LSB_JOBINDEX
+    echo "LSF clusters: LSB_JOBINDEX=$CHROM"
+elif [ ! -z "$SLURM_ARRAY_TASK_ID" ]; then
+    CHROM=$SLURM_ARRAY_TASK_ID
+    echo "SLURM clusters: SLURM_ARRAY_TASK_ID=$CHROM"
+else
+    echo "Unknown job scheduler"
+    exit 1
+fi
+
+moddir=$1
+valdir=$2
+valtag=$3
+winshift=$4
+
+# work dir
+if [ ! -d "$moddir" ]; then
+    echo "ERROR: NPS data directory does not exist: $moddir"
+    exit 1
+fi
+
+traintag=`Rscript -e "args <- readRDS(\"$moddir/args.RDS\"); cat(\":NPS:\", args[[\"traintag\"]], sep='');" | grep -F ':NPS:' | sed 's/^:NPS://' `
+
+modtag="$traintag.win_${winshift}"
+
+prefix="$valdir/chrom${CHROM}.${valtag}"
+
+if [ ! -s "$prefix.dosage.gz" ]; then
+    echo "ERROR: $prefix.dosage.gz is missing or empty"
+    exit 1
+fi
+
+M=`zcat < $prefix.dosage.gz | tail -n +2 | wc -l | sed 's/^[ \t]*//' `
+N=`zcat < $prefix.dosage.gz | head -n 1 | tr " " "\n" | tail -n +7 | wc -l | sed 's/^[ \t]*//' `
+
+echo "chr$CHROM N=$N M=$M"
+
+zcat < $prefix.dosage.gz | ./grs $N $M $moddir/$modtag.adjbetahat_tail.chrom$CHROM.txt > $moddir/$modtag.predY_tail.$valtag.chrom$CHROM.sscore
+
+zcat < $prefix.dosage.gz | ./grs $N $M $moddir/$modtag.adjbetahat_pg.chrom$CHROM.txt > $moddir/$modtag.predY_pg.$valtag.chrom$CHROM.sscore
