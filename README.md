@@ -9,12 +9,12 @@ We use the recommendation setting of `bigsnpr`, including 1,400 parameter combin
 The script `CT.sh` is to call `CT.R` function. The shell script is as following:
 ````shell
 # code path
-DIR=/home/yasheng/comprsWeb/
+DIR=/public/home/biostat03/project/compProject/COM-PGS-main/
 CODEDIR=${DIR}script/
 DATADIR=${DIR}/example_data/
 CT=${CODEDIR}01_CT/CT.sh
 # data path
-summ=${DATADIR}all/summary.assoc.txt
+summ=${DATADIR}all/summary
 valg=${DATADIR}val/valid
 valp=${DATADIR}val/valid_pheno.txt
 outpath=${DATADIR}output/
@@ -33,7 +33,7 @@ The detail for DBSLMM is: https://github.com/biostat0903/DBSLMM.
 We use the default setting for lassosum using `R`. Lassosum contains two hyper-parameters: the penalty parameter (λ) in the lasso regression and the shrinkage parameter (s) used for computing the SNP correlation matrix in the reference panel. Following lassosum paper, we considered four choices of s (0.2, 0.5, 0.9 and 1) and 20 choices of λ that are evenly spaced on the logarithmic scale between log(0.01) and log(0.1). The script `lassosum.sh` is to call `lassosum.R` function. The shell script is as following:
 ````shell
 # code path
-DIR=/home/yasheng/comprsWeb/
+DIR=/public/home/biostat03/project/compProject/COM-PGS-main/
 CODEDIR=${DIR}script/
 DATADIR=${DIR}/example_data/
 LASSOSUM=${CODEDIR}03_lassosum/lassosum.sh
@@ -45,14 +45,14 @@ outpath=${DATADIR}output/
 # population
 pop=EUR
 # lassosum method
-sh ${LASSOSUM} -C ${CODEDIR} -s ${summ} -G ${valg} -P ${valp} -p ${pop} -o ${outpath}
+sh ${LASSOSUM} -C ${CODEDIR}03_lassosum/ -s ${summ} -G ${valg} -P ${valp} -p ${pop} -o ${outpath}
 ````
 
 ## LDpred2 (bingsnpr `R` package)
 Following LDpred2 paper, we examined four different models implemented in LDpred2 described as follows. (1) LDpred2-inf is the infinitesimal model that is fitted based on an analytic solution. (2) LDpred2-sp is a sparse Bayesian variable selection regression model that selects a small proportion of SNPs to construct PGS. LDpred2-sp contains two hyper-parameters that include the proportion of causal variants p and the SNP heritability h2. LDpred2-sp explores different combinations of the two hyper-parameters on a pre-selected set of grid values and determines the optimal hyper-parameter combination through cross-validation. (3) LDpred2-nosp fits the same model as LDpred2-sp but sets the proportion of causal variants p to be exactly one (and thus becomes non-sparse). (4) LDpred2-auto fits the same model as LDpred2-nosp but automatically estimates p and h2 from the training data. The script `LDpred2.sh` is to call `LDpred2.R` function. The shell script is as following:
 ````shell
 # code path
-DIR=/home/yasheng/comprsWeb/
+DIR=/public/home/biostat03/project/compProject/COM-PGS-main/
 CODEDIR=${DIR}script/
 DATADIR=${DIR}/example_data/
 LDPRED2=${CODEDIR}/04_LDpred2/LDpred2.sh
@@ -64,18 +64,18 @@ outpath=${DATADIR}output/
 # parameters
 chr=22
 # LDpred2 method
-sh ${LDPRED2} -C ${CODEDIR}04_LDpred2/ -s ${summary_file_prefix}.assoc.txt -G ${val_geno} -P ${val_pheno} -C ${chr} -o ${outpath}
+sh ${LDPRED2} -C ${CODEDIR}04_LDpred2/ -s ${summary_file_prefix} -G ${val_geno} -P ${val_pheno} -R ${chr} -o ${outpath}
 ````
 
 ## NPS (`C++`+`R`)
 The original version of `NPS` can not use to analyze multiple traits at one time and can not analyze the genotype with NA. We update the `NPS` pacakge. The script `LDpred2.sh` is to call `LDpred2.R` function. The shell script is as following:
 ````shell
 # code path
-DIR=/home/yasheng/comprsWeb/
+DIR=/public/home/biostat03/project/compProject/COM-PGS-main/
 CODEDIR=${DIR}script/
 DATADIR=${DIR}/example_data/
-NPS=${CODEDIR}05_NPS/nps.sh
-SOFTDIR=${DIR}/software/NPS/
+NPS=${CODEDIR}05_NPS/NPS.sh
+SOFTDIR=${DIR}/software/
 # data path
 val_geno=${DATADIR}/val/valid
 val_pheno=${DATADIR}/val/valid_pheno.txt
@@ -84,7 +84,7 @@ outpath=${DATADIR}/output/
 # parameter
 window_size=60
 # NPS
-sh ${nps} -C ${SOFTDIR} -s ${summary_file_prefix} -G ${val_geno} -P ${val_pheno} -w ${window_size} -o ${outpath}
+sh ${NPS} -C ${SOFTDIR} -s ${summary_file_prefix} -G ${val_geno} -P ${val_pheno} -w ${window_size} -o ${outpath}
 ````
 
 ## PRSCS (`python`)
@@ -109,11 +109,12 @@ sh ${PRSCS} -s ${summary_file_prefix} -c ${chr} -p ${pop} -o ${out_prefix}
 Following SbayesR paper, we set the weights of the four normal components (“--pi”) to the default values of {0.95,0.02,0.02,0.01} and set the four scaling variance parameters (“--gamma”) to the default values of {0,0.01,0.1,1}. We constructed the SNP LD matrix using the “--make-shrunk-ldm” option, again with the default settings (effective population size = 11,400; genetic map sample size = 183; shrinkage hard threshold = 10-5). We set the MCMC chain length to be 10,000 with an additional 2,000 burn-in iterations. 
 ````bash
 # code path
-DIR=/home/yasheng/comprsWeb/
+DIR=/public/home/biostat03/project/compProject/COM-PGS-main/
 CODEDIR=${DIR}script/
 DATADIR=${DIR}/example_data/
 SBAYESR=${CODEDIR}07_SbayesR/SbayesR.sh
 SOFTDIR=${DIR}/software/ # please download the GCTB software and store it in the directory
+LDDIR=${DATADIR}chr22
 # parameters
 summary_file_prefix=${DATADIR}chr22/summary
 chr=22
@@ -121,17 +122,17 @@ pi=0.95,0.02,0.02,0.01
 out_prefix=${DATADIR}output/SbayesR_esteff
 pop=EUR
 # SbayesR method
-sh ${SBAYESR} -C ${SOFTDIR} -s ${summary_file_prefix} -P ${pop} -c ${chr} -p ${pi} -o ${out_prefix}
+sh ${SBAYESR} -C ${SOFTDIR} -s ${summary_file_prefix} -L ${LDDIR} -c ${chr} -p ${pi} -o ${out_prefix}
 ````
 
 ## SBLUP (GCTA `C++`)
 We used the GCTA to fit SBLUP and used h2 as the SNP heritability input. SBLUP also requires users to specify a LD window size that is used to construct the SNP correlation matrix in the reference panel. 
 ````bash
 # code path
-DIR=/home/yasheng/comprsWeb/
+DIR=/public/home/biostat03/project/compProject/COM-PGS-main/
 CODEDIR=${DIR}/script/
 DATADIR=${DIR}/example_data/
-SBLUP=${CODEDIR}/08_SBLUP/sblup.sh
+SBLUP=${CODEDIR}/08_SBLUP/SBLUP.sh
 SOFTDIR=${DIR}/software/ # please download the GCTA software and store it in the directory
 # parameters
 summary_file_prefix=${DATADIR}chr22/summary
@@ -148,12 +149,12 @@ sh ${SBLUP} -C ${SOFTDIR} -s ${summary_file_prefix} -H ${herit} -r ${ref_file} -
 The input of SCT is the same as that of CT.
 ````shell
 # code path
-DIR=/home/yasheng/comprsWeb/
+DIR=/public/home/biostat03/project/compProject/COM-PGS-main/
 CODEDIR=${DIR}script/
 DATADIR=${DIR}/example_data/
-CT=${CODEDIR}09_SCT/SCT.sh
+SCT=${CODEDIR}09_SCT/SCT.sh
 # data path
-summ=${DATADIR}all/summary.assoc.txt
+summ=${DATADIR}all/summary
 valg=${DATADIR}val/valid
 valp=${DATADIR}val/valid_pheno.txt
 outpath=${DATADIR}output/
@@ -161,8 +162,8 @@ outpath=${DATADIR}output/
 pl=2
 rv=0.1,0.2
 dv=50
-# CT method
-sh ${SCT} -C ${CODEDIR}01_CT/ -s ${summ} -G ${valg} -P ${valp} -p ${pl} -r ${rv} -d ${dv} -${outpath}
+# SCT method
+sh ${SCT} -C ${CODEDIR}09_SCT/ -s ${summ} -G ${valg} -P ${valp} -p ${pl} -r ${rv} -d ${dv} -o ${outpath}
 ````
 ## External validation (`R`)
 The detail for external validation is: https://github.com/biostat0903/DBSLMM. 
