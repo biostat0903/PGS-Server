@@ -1,13 +1,11 @@
 #! /usr/bin/env Rscript
 rm(list=ls())
-library(plyr, lib.loc = "/home/yasheng/R/x86_64-pc-linux-gnu-library/3.6/")
-library(bigstatsr, lib.loc = "/home/yasheng/R/x86_64-pc-linux-gnu-library/3.6/")
-library(bigsnpr, lib.loc = "/home/yasheng/R/x86_64-pc-linux-gnu-library/3.6/")
-library(bigreadr, lib.loc = "/home/yasheng/R/x86_64-pc-linux-gnu-library/3.6/")
-# library(dplyr, lib.loc = "/home/yasheng/R/x86_64-pc-linux-gnu-library/3.6/")
-# library(tidyselect, lib.loc = "/home/yasheng/R/x86_64-pc-linux-gnu-library/3.6/")
+library(plyr)
+library(bigstatsr)
+library(bigsnpr)
+library(bigreadr)
 library(tidyverse)
-library(optparse, lib.loc = "/home/yasheng/R/x86_64-pc-linux-gnu-library/3.6/")
+library(optparse)
 
 ## Input parameters
 args_list = list(
