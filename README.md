@@ -90,19 +90,27 @@ sh ${NPS} -C ${SOFTDIR} -s ${summary_file_prefix} -G ${val_geno} -P ${val_pheno}
 ## PRSCS (`python`)
 Following PRSCS paper, we set the hyper-parameter a in PRSCS to the default value of 1, set the hyper-parameter b to the default value of 0.5, and inferred the global scaling hyper-parameter ϕ among a set of four choices {10^(-6),10^(-4),0.01,1}. We also examined the automatic version of PRSCS, referring to PRSCS-auto. 
 ````shell
-
-DIR=/home/yasheng/comprsWeb/scripts/
-PRSCS=${DIR}PRSCS.sh
+# code path
+DIR=/public/home/biostat03/project/compProject/COM-PGS-main/
+CODEDIR=${DIR}software/
+DATADIR=${DIR}/example_data/
+PRSCS=${DIR}/script/06_PRSCS/PRSCS.sh
 
 # parameters
-summary_file_prefix=/home/yasheng/comprsWeb/example_data/chr22/summary
-out_prefix=/home/yasheng/comprsWeb/example_data/output/PRSCS_esteff
-chr=22
-pop=EUR
+summary_file_prefix=${DATADIR}all/summary
+mkdir ${DATADIR}/output/PRSCS
+outpath=${DATADIR}/output/PRSCS
+index=r2
+LDpath=${DATADIR}all/ldblk_1kg_eur
+valg=${DATADIR}val/valid
+valp=${DATADIR}val/valid_pheno.txt
 
-sh ${PRSCS} -s ${summary_file_prefix} -c ${chr} -p ${pop} -o ${out_prefix}
-
-
+# PRSCS-auto
+sh ${PRSCS} -C ${CODEDIR} -s ${summary_file_prefix} -L ${LDpath} -T auto \
+            -G ${valg} -o ${outpath}
+# PRSCS-tuning
+sh ${PRSCS} -C ${CODEDIR} -s ${summary_file_prefix} -L ${LDpath} -T tuning \
+            -G ${valg} -o ${outpath} -P ${valp} -i ${index}
 ````
 
 ## SbayesR (GCTB `C++`)
