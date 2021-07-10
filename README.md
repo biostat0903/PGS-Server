@@ -112,6 +112,7 @@ sh ${PRSCS} -C ${CODEDIR} -s ${summary_file_prefix} -L ${LDpath} -T auto \
 sh ${PRSCS} -C ${CODEDIR} -s ${summary_file_prefix} -L ${LDpath} -T tuning \
             -G ${valg} -o ${outpath} -P ${valp} -i ${index}
 ````
+Note: The user should download the LD matrix on [PRSCS](https://github.com/getian107/PRScs).
 
 ## SbayesR (GCTB `C++`)
 Following SbayesR paper, we set the weights of the four normal components (“--pi”) to the default values of {0.95,0.02,0.02,0.01} and set the four scaling variance parameters (“--gamma”) to the default values of {0,0.01,0.1,1}. We constructed the SNP LD matrix using the “--make-shrunk-ldm” option, again with the default settings (effective population size = 11,400; genetic map sample size = 183; shrinkage hard threshold = 10-5). We set the MCMC chain length to be 10,000 with an additional 2,000 burn-in iterations. 
@@ -132,6 +133,7 @@ pop=EUR
 # SbayesR method
 sh ${SBAYESR} -C ${SOFTDIR} -s ${summary_file_prefix} -L ${LDDIR} -c ${chr} -p ${pi} -o ${out_prefix}
 ````
+Note: The user should make the LD matrix following the manual of [SbayesR](https://cnsgenomics.com/software/gctb/#Tutorial).
 
 ## SBLUP (GCTA `C++`)
 We used the GCTA to fit SBLUP and used h2 as the SNP heritability input. SBLUP also requires users to specify a LD window size that is used to construct the SNP correlation matrix in the reference panel. 
