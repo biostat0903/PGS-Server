@@ -89,5 +89,5 @@ esteff_best <- data.frame(snp = summstats$snp[out_best$sumstats$order],
                           beta = out_best$beta)
 esteff_best_nz <- esteff_best[esteff_best[, 3] != 0, ]
 
-write.table(esteff_best_nz, file = opt$outpath, 
+write.table(esteff_best_nz, file = paste0(opt$outpath, "lassosum_esteff.txt"), 
             row.names = F, col.names = F, quote = F)
