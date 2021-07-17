@@ -175,5 +175,5 @@ system(paste0("rm ", sub_bk_str, ".bk"))
 system(paste0("rm ", sub_bk_str, ".rds"))
 
 write.table(beta_LDpred2, 
-            file = opt$outpath,
+            file = paste0(opt$outpath, "LDpred2_esteff_chr", opt$chr, ".txt"),
             col.names = F, row.names = F, quote = F)
