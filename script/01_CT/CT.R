@@ -150,7 +150,7 @@ snp_sig_CT <- data.frame(map$rsid[idx],
 # output
 write.table(grid2, file = paste0(opt$outpath, "grid.txt"),
             col.names = F, row.names = F, quote = F)
-write.table(snp_sig_CT, file = opt$outpath,
+write.table(snp_sig_CT, file = paste0(opt$outpath, "CT_esteff.txt"),
             col.names = F, row.names = F, quote = F)
 system(paste0("rm ", opt$valid_genotype, ".bk"))
 system(paste0("rm ", bk_str, ".bk"))
