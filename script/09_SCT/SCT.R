@@ -131,7 +131,7 @@ snp_sig_SCT <- data.frame(map$rsid[idx],
                           new_beta[idx])
 
 # output
-write.table(snp_sig_SCT, file = opt$outpath,
+write.table(snp_sig_SCT, file = paste0(opt$outpath, "SCT_esteff.txt"),
             col.names = F, row.names = F, quote = F)
 system(paste0("rm ", opt$valid_genotype, ".bk"))
 system(paste0("rm ", bk_str, ".bk"))
