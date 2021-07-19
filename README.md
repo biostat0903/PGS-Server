@@ -4,6 +4,10 @@ A web server fits the existing methods of PGS construction based on summary stat
 ## Preparing for code
 All methods are coded by `R`, `plink` and shell script. The user should run the code in Linux or virtual environment for Linux. Then the user should install the R packages, including `bigsnpr`, `bigstatsr`, `bigreadr`, `plyr`, `tidyverse`, `optparse`, `lassosum` and `doParallel`. <br>
 NPS should use [`qctool`](https://www.well.ox.ac.uk/~gav/qctool_v2/documentation/download.html) and [`plink`](https://www.cog-genomics.org/plink/). DBSLMM should use `plink`. SBayesR and SBLUP should use [`GCTB`](https://cnsgenomics.com/software/gctb/#Download) and [`GCTA`](https://cnsgenomics.com/software/gcta/#Download). 
+
+## Example data
+All the example data can be used to the test data for [PGS-Server](www.pgs-server.com). If you have any suggestion for the website, you can sent e-mail or leave me message on `Issue`. 
+
 ## CT (bingsnpr `R` package)
 We use the recommendation setting of `bigsnpr`, including 1,400 parameter combinations. The combination has three parameters, including p value, window size and r2. follwing , we recomment 50 different settings of p value, 4 different settings of window size and 7 different settings of r2. 
 The script `CT.sh` is to call `CT.R` function. The shell script is as following:
