@@ -19,7 +19,7 @@ args_list = list(
               help="INPUT: sample size", metavar="character"),
   make_option("--population", type="character", default=NULL,
               help="INPUT: population", metavar="character"), 
-  make_option("--covarites", type="character", default=NULL,
+  make_option("--covariates", type="character", default=NULL,
               help="INPUT: covariates", metavar="character"), 
   make_option("--outpath", type="character", default=NULL,
               help="OUTPUT: outpath", metavar="character"),
